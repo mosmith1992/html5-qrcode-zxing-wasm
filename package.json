@@ -89,5 +89,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "zxing-wasm": "^3.1.1"
   }
 }

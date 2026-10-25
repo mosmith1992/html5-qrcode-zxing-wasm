@@ -1083,8 +1083,9 @@ export class Html5Qrcode {
             ? this.getShadedRegionBounds(viewfinderWidth, viewfinderHeight, qrDimensions)
             : defaultQrRegion;
  
+        const pixelRatio = window.devicePixelRatio;
         const canvasElement = this.createCanvasElement(
-            qrRegion.width, qrRegion.height);
+            qrRegion.width * pixelRatio, qrRegion.height * pixelRatio);
         // Tell user agent that this canvas will be read frequently.
         // More info:
         // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
@@ -1093,8 +1094,8 @@ export class Html5Qrcode {
         // caught up with latest definition for 'CanvasRenderingContext2DSettings'.
         const context: CanvasRenderingContext2D
             = (<any>canvasElement).getContext("2d", contextAttributes)!;
-        context.canvas.width = qrRegion.width;
-        context.canvas.height = qrRegion.height;
+        // context.canvas.width = qrRegion.width;
+        // context.canvas.height = qrRegion.height;
 
         // Insert the canvas
         this.element!.append(canvasElement);
@@ -1194,6 +1195,7 @@ export class Html5Qrcode {
         // Only decode the relevant area, ignore the shaded area,
         // More reference:
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+        let pixelRatio = window.devicePixelRatio;
         this.context!.drawImage(
             videoElement,
             /* sx= */ sxOffset,
@@ -1202,8 +1204,8 @@ export class Html5Qrcode {
             /* sHeight= */ sHeightOffset,
             /* dx= */ 0,
             /* dy= */  0,
-            /* dWidth= */ this.qrRegion.width,
-            /* dHeight= */ this.qrRegion.height);
+            /* dWidth= */ this.qrRegion.width * pixelRatio,
+            /* dHeight= */ this.qrRegion.height * pixelRatio);
 
         const triggerNextScan = () => {
             this.foreverScanTimeout = setTimeout(() => {
@@ -1415,7 +1417,9 @@ export class Html5Qrcode {
         const canvasElement = document.createElement("canvas");
         canvasElement.style.width = `${canvasWidth}px`;
         canvasElement.style.height = `${canvasHeight}px`;
-        canvasElement.style.display = "none";
+        canvasElement.width = canvasWidth;
+        canvasElement.height = canvasHeight;
+        canvasElement.style.visibility = "hidden";
         canvasElement.id = isNullOrUndefined(customId)
             ? "qr-canvas" : customId!;
         return canvasElement;
@@ -1461,9 +1465,9 @@ export class Html5Qrcode {
             = `${topBottomBorderSize}px solid rgba(0, 0, 0, 0.48)`;
         shadingElement.style.boxSizing = "border-box";
         shadingElement.style.top = "0px";
-        shadingElement.style.bottom = "0px";
         shadingElement.style.left = "0px";
-        shadingElement.style.right = "0px";
+        shadingElement.style.width = width + 'px';
+        shadingElement.style.height = height + 'px';
         shadingElement.id = `${Constants.SHADED_REGION_ELEMENT_ID}`;
   
         // Check if div is too small for shadows. As there are two 5px width
