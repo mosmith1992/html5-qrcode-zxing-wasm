@@ -23,8 +23,7 @@ Looking for **form template printing, report and printing solutions**?
 ## ☕ Support / Donate
 If this optimization helps you, you can buy me a coffee.
 
-![Donate QR Code](./donate-qrcode.jpg)
-
+![Donote QR Code](https://raw.githubusercontent.com/mosmith1992/html5-qrcode-zxing-wasm/refs/heads/master/donote-qrcode.jpg)
 ## 📄 License
 Follows the license of the original upstream repository.
 
